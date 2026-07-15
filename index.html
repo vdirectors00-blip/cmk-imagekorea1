@@ -109,6 +109,10 @@
     .navcontact { display:none !important; }
     /* 모바일 1단 배치 시 데스크탑 지그재그(order)가 순서를 뒤섞음 → 전 섹션 사진 먼저로 통일 */
     .grid-2 .swap-wrap { order:-1 !important; }
+    /* Philosophy: 모바일에서 fixed 배경이 깨져(과확대·점프) scroll로 전환 */
+    section[data-screen-label="Philosophy"] { background-attachment:scroll !important; background-position:center center !important; }
+    /* Hero: 가로(4:3) 사진이 세로 화면에서 과도하게 줌인되지 않도록 높이 축소해 가로를 더 노출 */
+    #top { height:74svh !important; min-height:500px !important; }
   }
 </style>
 </head>

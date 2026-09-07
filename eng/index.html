@@ -57,6 +57,7 @@
   .hero-img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; opacity:0; }
   .hero-img.is-active { opacity:1; }
   .hero-img.is-in { opacity:1; z-index:2; transition:opacity 1.2s ease; }
+  .hero-video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; }
   .hero-fade { position:absolute; inset:0; z-index:1; background:linear-gradient(100deg, #FFFFFF 0%, #FFFFFF 25%, rgba(255,255,255,.78) 36%, rgba(255,255,255,.26) 50%, rgba(255,255,255,0) 62%); }
   .hero-topscrim { position:absolute; top:0; left:0; right:0; height:160px; z-index:1; background:linear-gradient(to bottom, rgba(255,255,255,.9), rgba(255,255,255,0)); }
   .hero-inner { position:relative; z-index:3; height:100%; max-width:1500px; margin:0 auto; padding:0 clamp(20px,5vw,60px); display:flex; align-items:center; }
@@ -79,6 +80,11 @@
     .hero-fade { background:linear-gradient(145deg, #FFFFFF 0%, #FFFFFF 26%, rgba(255,255,255,.8) 50%, rgba(255,255,255,.4) 76%, rgba(255,255,255,.18) 100%); }
     .hero-main { font-size:clamp(27px,7.5vw,40px); }
     .hero-text { max-width:100%; }
+  }
+  /* 모바일·세로 태블릿: 가로형(16:9) 히어로 영상을 자르지 않고 전체 노출, 남는 위아래는 순백 여백 */
+  @media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+    .hero { background:#FFFFFF; }
+    .hero-video { object-fit:contain; object-position:center 62%; z-index:1; }
   }
 
   /* header (scroll state) */
@@ -136,8 +142,16 @@
     .navshop { display:none !important; }
     /* 모바일 1단 배치 시 데스크탑 지그재그(order)가 순서를 뒤섞음 → 전 섹션 사진 먼저로 통일 */
     .grid-2 .swap-wrap { order:-1 !important; }
-    /* Hero: 가로(4:3) 사진이 세로 화면에서 과도하게 줌인되지 않도록 높이 축소해 가로를 더 노출 */
-    #top { height:74svh !important; min-height:500px !important; }
+    /* Hero: 가로(16:9) 영상 전체 노출 + 흰 여백 170px을 위 105 / 아래 65로 배분(헤더 88px 아래로 영상, 아래 About 헤딩과는 가깝게) */
+    #top { height:calc(56.25vw + 170px) !important; min-height:0 !important; }
+  }
+
+  /* About: 모바일에서는 'ABOUT / Creative Partner' 헤딩을 사진 위로 (데스크톱은 기존 그대로) */
+  .about-head-m { display:none; }
+  @media (max-width: 900px) {
+    #about { padding-top:34px !important; }
+    #about .about-head-m { display:block; }
+    #about .about-head-d { display:none; }
   }
 
   /* 좁은 화면(≤480px): 푸터 1단 — FOLLOW 아이콘이 화면 밖으로 잘리던 문제 */
@@ -195,32 +209,29 @@
   <!-- HERO -->
   <section id="top" data-screen-label="Hero" class="hero">
     <div class="hero-bg">
-      <img class="hero-img is-active" src="../assets/hero-new1.jpg" alt="" fetchpriority="high">
-      <img class="hero-img" src="../assets/hero-new2.jpg" alt="" loading="lazy">
-      <img class="hero-img" src="../assets/hero-new3.jpg" alt="" loading="lazy">
-      <img class="hero-img" src="../assets/hero-new4.jpg" alt="" loading="lazy">
+      <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="../assets/hero-0907.jpg">
+        <source src="../assets/hero-0907.mp4" type="video/mp4">
+      </video>
     </div>
-    <div class="hero-fade"></div>
     <div class="hero-topscrim"></div>
-    <div class="hero-inner">
-      <div class="hero-text show" id="heroText">
-        <h1 class="hero-main" id="heroMain">CREATIVE PARTNER<br>CMK IMAGE KOREA</h1>
-        <p class="hero-sub" id="heroSub">CMK Image Korea connects through a Creative Service<br>unlike anything you have experienced before.</p>
-      </div>
-    </div>
-    <div class="hero-dots" id="heroDots" aria-label="Hero slides"></div>
   </section>
 
   <!-- (규모감/고객사 로고 섹션은 페이지 하단(footer 앞)으로 이동) -->
   <!-- ABOUT -->
   <section id="about" data-screen-label="About" style="background:#FFFFFF;padding:clamp(60px,8vh,104px) clamp(20px,5vw,60px);">
     <div class="grid-2" style="max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(40px,6vw,96px);align-items:center;">
+      <div class="about-head about-head-m">
+        <div style="font-size:11px;font-weight:500;letter-spacing:.2em;color:#8A8276;">ABOUT</div>
+        <h2 style="font-weight:400;font-size:clamp(28px,3.6vw,50px);line-height:1.32;letter-spacing:-0.02em;margin:22px 0 0;color:#211C17;">Creative Partner<br>CMK Image Korea</h2>
+      </div>
       <div class="imgzoom">
         <img src="../assets/about-main.jpg" alt="CMK Image Korea" style="display:block;width:100%;aspect-ratio:4/3;object-fit:cover;transition:transform 1.3s cubic-bezier(.16,.72,.28,1),filter 1.3s ease;">
       </div>
       <div>
-        <div style="font-size:11px;font-weight:500;letter-spacing:.2em;color:#8A8276;">ABOUT</div>
-        <h2 style="font-weight:400;font-size:clamp(28px,3.6vw,50px);line-height:1.32;letter-spacing:-0.02em;margin:22px 0 0;color:#211C17;">Creative Partner<br>CMK Image Korea</h2>
+        <div class="about-head about-head-d">
+          <div style="font-size:11px;font-weight:500;letter-spacing:.2em;color:#8A8276;">ABOUT</div>
+          <h2 style="font-weight:400;font-size:clamp(28px,3.6vw,50px);line-height:1.32;letter-spacing:-0.02em;margin:22px 0 0;color:#211C17;">Creative Partner<br>CMK Image Korea</h2>
+        </div>
         <p style="font-weight:300;font-size:15.5px;line-height:1.95;color:#5F5849;margin:28px 0 0;max-width:44ch;">Built on 25+ years of on-site consulting, CMK Image Korea designs the image of corporate, financial, and public-sector leaders into a single strategy. With our accumulated expertise, we turn the impression of individuals and organizations into an asset of trust.</p>
         <div style="margin-top:clamp(32px,4vw,44px);padding-top:28px;border-top:1px solid rgba(42,38,34,.16);">
           <blockquote style="font-weight:400;font-size:clamp(17px,1.6vw,21px);line-height:1.62;letter-spacing:-0.01em;margin:0;color:#211C17;">"Image is not only for a select few. It is a strategy every modern person needs."</blockquote>
@@ -665,64 +676,6 @@
     el.appendChild(shield);
   });
 
-  // --- HERO: 4장 슬라이드 + 메인/서브 멘트 리빌 ---
-  (function () {
-    var HERO = [
-      { main: 'CREATIVE PARTNER<br>CMK IMAGE KOREA', sub: 'CMK Image Korea connects through a Creative Service<br>unlike anything you have experienced before.' },
-      { main: 'The image partner for<br>Korea’s leaders and institutions', sub: 'For 25+ years, we have designed the impression, attitude,<br>and language of corporate, financial & public-sector leaders into one strategy.' },
-      { main: 'CREATIVE EXPERT GROUP', sub: 'As Korea’s foremost image consultants, CMK Image Korea<br>carries on the pride of a Creative Expert Group.' },
-      { main: 'Content and programs that keep<br>your image ahead of the times', sub: 'Through diverse content and programs in step with the times,<br>we elevate the evolving image of every company.' }
-    ];
-    var imgs = document.querySelectorAll('.hero-img');
-    var main = document.getElementById('heroMain');
-    var sub = document.getElementById('heroSub');
-    var txt = document.getElementById('heroText');
-    var dotsWrap = document.getElementById('heroDots');
-    if (!imgs.length || !main || !sub || !txt || !dotsWrap) return;
-    var n = HERO.length, i = 0, timer;
-    HERO.forEach(function (_, k) {
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'hero-dot' + (k === 0 ? ' on' : '');
-      b.setAttribute('aria-label', 'Slide ' + (k + 1));
-      b.addEventListener('click', function () { go(k); restart(); });
-      dotsWrap.appendChild(b);
-    });
-    var dots = dotsWrap.querySelectorAll('.hero-dot');
-    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var DIR = { up: 'rvUp', down: 'rvDown', left: 'rvLeft', right: 'rvRight' };
-    // 슬라이드별로 [메인, 서브] 등장 방향을 섞음
-    var MOVES = [ ['up', 'down'], ['down', 'up'], ['left', 'right'], ['right', 'up'] ];
-    var swapT;
-    function paint() {
-      for (var d = 0; d < dots.length; d++) dots[d].classList.toggle('on', d === i);
-      main.innerHTML = HERO[i].main;
-      sub.innerHTML = HERO[i].sub;
-      if (reduce) return;
-      var mv = MOVES[i % MOVES.length];
-      main.style.animation = 'none'; sub.style.animation = 'none';
-      void main.offsetWidth; // reflow → 애니메이션 재생
-      main.style.animation = DIR[mv[0]] + ' .9s cubic-bezier(.16,.72,.28,1) forwards';
-      sub.style.animation = DIR[mv[1]] + ' .95s cubic-bezier(.16,.72,.28,1) .18s forwards';
-    }
-    function go(k) {
-      k = (k + n) % n; if (k === i) return;
-      clearTimeout(swapT);
-      // finalize any in-progress crossfade: keep only current as base layer
-      for (var c = 0; c < imgs.length; c++) { imgs[c].classList.remove('is-in'); imgs[c].classList.toggle('is-active', c === i); }
-      var incoming = imgs[k], prev = i;
-      i = k;
-      incoming.classList.add('is-in'); // fade in on top of the stable current image (no white gap)
-      swapT = setTimeout(function () {
-        imgs[prev].classList.remove('is-active');
-        incoming.classList.remove('is-in');
-        incoming.classList.add('is-active');
-      }, 1250);
-      paint();
-    }
-    function restart() { clearInterval(timer); timer = setInterval(function () { go(i + 1); }, 6000); }
-    paint(); restart();
-  })();
 
   // --- header nav now links to each section's own detail page (about.html 등).
   //     Contact(navcontact)만 홈 내 #contact 로 스크롤됩니다.

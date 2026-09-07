@@ -81,6 +81,12 @@
     .hero-main { font-size:clamp(27px,7.5vw,40px); }
     .hero-text { max-width:100%; }
   }
+  /* 모바일·세로 태블릿: 가로형(16:9) 히어로 영상을 자르지 않고 전체 노출, 남는 위아래는 영상 스틸 블러로 채움 */
+  @media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+    .hero { height:100svh; min-height:480px; }
+    .hero-bg::before { content:""; position:absolute; inset:0; z-index:0; background:url("assets/hero-0907.jpg") center center / cover no-repeat; filter:blur(26px) saturate(.92) brightness(1.04); transform:scale(1.12); }
+    .hero-video { top:50%; bottom:auto; height:auto; aspect-ratio:16/9; object-fit:contain; transform:translateY(-50%); z-index:1; }
+  }
 
   /* header (scroll state) */
   #siteHeader { position:fixed; top:0; left:0; right:0; z-index:60; transition:background .5s ease,color .5s ease,border-color .5s ease; background:transparent; color:#211C17; border-bottom:1px solid rgba(244,241,234,0); }

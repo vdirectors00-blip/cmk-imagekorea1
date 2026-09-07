@@ -57,6 +57,7 @@
   .hero-img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; opacity:0; }
   .hero-img.is-active { opacity:1; }
   .hero-img.is-in { opacity:1; z-index:2; transition:opacity 1.2s ease; }
+  .hero-video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; }
   .hero-fade { position:absolute; inset:0; z-index:1; background:linear-gradient(100deg, #FFFFFF 0%, #FFFFFF 25%, rgba(255,255,255,.78) 36%, rgba(255,255,255,.26) 50%, rgba(255,255,255,0) 62%); }
   .hero-topscrim { position:absolute; top:0; left:0; right:0; height:160px; z-index:1; background:linear-gradient(to bottom, rgba(255,255,255,.9), rgba(255,255,255,0)); }
   .hero-inner { position:relative; z-index:3; height:100%; max-width:1500px; margin:0 auto; padding:0 clamp(20px,5vw,60px); display:flex; align-items:center; }
@@ -195,10 +196,9 @@
   <!-- HERO -->
   <section id="top" data-screen-label="Hero" class="hero">
     <div class="hero-bg">
-      <img class="hero-img is-active" src="assets/hero-new1.jpg" alt="" fetchpriority="high">
-      <img class="hero-img" src="assets/hero-new2.jpg" alt="" loading="lazy">
-      <img class="hero-img" src="assets/hero-new3.jpg" alt="" loading="lazy">
-      <img class="hero-img" src="assets/hero-new4.jpg" alt="" loading="lazy">
+      <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="assets/hero-0907.jpg">
+        <source src="assets/hero-0907.mp4" type="video/mp4">
+      </video>
     </div>
     <div class="hero-fade"></div>
     <div class="hero-topscrim"></div>
@@ -673,12 +673,11 @@
       { main: 'CREATIVE EXPERT GROUP', sub: 'CMK 이미지코리아는 대한민국 최고의 이미지컨설턴트로<br>Creative Expert Group의 자긍심을 이어가겠습니다.' },
       { main: 'Content and programs that keep<br>your image ahead of the times', sub: '시대의 흐름에 맞게 다양한 콘텐츠와<br>프로그램 개발을 통해 변화하는 기업의 이미지를 제고합니다.' }
     ];
-    var imgs = document.querySelectorAll('.hero-img');
     var main = document.getElementById('heroMain');
     var sub = document.getElementById('heroSub');
     var txt = document.getElementById('heroText');
     var dotsWrap = document.getElementById('heroDots');
-    if (!imgs.length || !main || !sub || !txt || !dotsWrap) return;
+    if (!main || !sub || !txt || !dotsWrap) return;
     var n = HERO.length, i = 0, timer;
     HERO.forEach(function (_, k) {
       var b = document.createElement('button');
@@ -693,7 +692,6 @@
     var DIR = { up: 'rvUp', down: 'rvDown', left: 'rvLeft', right: 'rvRight' };
     // 슬라이드별로 [메인, 서브] 등장 방향을 섞음
     var MOVES = [ ['up', 'down'], ['down', 'up'], ['left', 'right'], ['right', 'up'] ];
-    var swapT;
     function paint() {
       for (var d = 0; d < dots.length; d++) dots[d].classList.toggle('on', d === i);
       main.innerHTML = HERO[i].main;
@@ -705,21 +703,7 @@
       main.style.animation = DIR[mv[0]] + ' .9s cubic-bezier(.16,.72,.28,1) forwards';
       sub.style.animation = DIR[mv[1]] + ' .95s cubic-bezier(.16,.72,.28,1) .18s forwards';
     }
-    function go(k) {
-      k = (k + n) % n; if (k === i) return;
-      clearTimeout(swapT);
-      // finalize any in-progress crossfade: keep only current as base layer
-      for (var c = 0; c < imgs.length; c++) { imgs[c].classList.remove('is-in'); imgs[c].classList.toggle('is-active', c === i); }
-      var incoming = imgs[k], prev = i;
-      i = k;
-      incoming.classList.add('is-in'); // fade in on top of the stable current image (no white gap)
-      swapT = setTimeout(function () {
-        imgs[prev].classList.remove('is-active');
-        incoming.classList.remove('is-in');
-        incoming.classList.add('is-active');
-      }, 1250);
-      paint();
-    }
+    function go(k) { i = (k + n) % n; paint(); }
     function restart() { clearInterval(timer); timer = setInterval(function () { go(i + 1); }, 6000); }
     paint(); restart();
   })();

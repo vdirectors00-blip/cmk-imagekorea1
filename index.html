@@ -200,15 +200,7 @@
         <source src="assets/hero-0907.mp4" type="video/mp4">
       </video>
     </div>
-    <div class="hero-fade"></div>
     <div class="hero-topscrim"></div>
-    <div class="hero-inner">
-      <div class="hero-text show" id="heroText">
-        <h1 class="hero-main" id="heroMain">CREATIVE PARTNER<br>CMK IMAGE KOREA</h1>
-        <p class="hero-sub" id="heroSub">CMK 이미지코리아는 지금껏 경험하지 못한<br>Creative Service로 소통하겠습니다.</p>
-      </div>
-    </div>
-    <div class="hero-dots" id="heroDots" aria-label="히어로 슬라이드"></div>
   </section>
 
   <!-- (규모감/고객사 로고 섹션은 페이지 하단(footer 앞)으로 이동) -->
@@ -665,48 +657,6 @@
     el.appendChild(shield);
   });
 
-  // --- HERO: 4장 슬라이드 + 메인/서브 멘트 리빌 ---
-  (function () {
-    var HERO = [
-      { main: 'CREATIVE PARTNER<br>CMK IMAGE KOREA', sub: 'CMK 이미지코리아는 지금껏 경험하지 못한<br>Creative Service로 소통하겠습니다.' },
-      { main: 'The image partner for<br>Korea’s leaders and institutions', sub: '25여 년간 기업·금융·공공기관 리더의 인상,<br>태도, 언어를 하나의 전략으로 설계해 왔습니다.' },
-      { main: 'CREATIVE EXPERT GROUP', sub: 'CMK 이미지코리아는 대한민국 최고의 이미지컨설턴트로<br>Creative Expert Group의 자긍심을 이어가겠습니다.' },
-      { main: 'Content and programs that keep<br>your image ahead of the times', sub: '시대의 흐름에 맞게 다양한 콘텐츠와<br>프로그램 개발을 통해 변화하는 기업의 이미지를 제고합니다.' }
-    ];
-    var main = document.getElementById('heroMain');
-    var sub = document.getElementById('heroSub');
-    var txt = document.getElementById('heroText');
-    var dotsWrap = document.getElementById('heroDots');
-    if (!main || !sub || !txt || !dotsWrap) return;
-    var n = HERO.length, i = 0, timer;
-    HERO.forEach(function (_, k) {
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'hero-dot' + (k === 0 ? ' on' : '');
-      b.setAttribute('aria-label', '슬라이드 ' + (k + 1));
-      b.addEventListener('click', function () { go(k); restart(); });
-      dotsWrap.appendChild(b);
-    });
-    var dots = dotsWrap.querySelectorAll('.hero-dot');
-    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var DIR = { up: 'rvUp', down: 'rvDown', left: 'rvLeft', right: 'rvRight' };
-    // 슬라이드별로 [메인, 서브] 등장 방향을 섞음
-    var MOVES = [ ['up', 'down'], ['down', 'up'], ['left', 'right'], ['right', 'up'] ];
-    function paint() {
-      for (var d = 0; d < dots.length; d++) dots[d].classList.toggle('on', d === i);
-      main.innerHTML = HERO[i].main;
-      sub.innerHTML = HERO[i].sub;
-      if (reduce) return;
-      var mv = MOVES[i % MOVES.length];
-      main.style.animation = 'none'; sub.style.animation = 'none';
-      void main.offsetWidth; // reflow → 애니메이션 재생
-      main.style.animation = DIR[mv[0]] + ' .9s cubic-bezier(.16,.72,.28,1) forwards';
-      sub.style.animation = DIR[mv[1]] + ' .95s cubic-bezier(.16,.72,.28,1) .18s forwards';
-    }
-    function go(k) { i = (k + n) % n; paint(); }
-    function restart() { clearInterval(timer); timer = setInterval(function () { go(i + 1); }, 6000); }
-    paint(); restart();
-  })();
 
   // --- header nav now links to each section's own detail page (about.html 등).
   //     Contact(navcontact)만 홈 내 #contact 로 스크롤됩니다.

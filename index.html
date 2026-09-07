@@ -83,8 +83,8 @@
   }
   /* 모바일·세로 태블릿: 가로형(16:9) 히어로 영상을 자르지 않고 전체 노출, 남는 위아래는 순백 여백 */
   @media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
-    .hero { height:100svh; min-height:480px; background:#FFFFFF; }
-    .hero-video { top:50%; bottom:auto; height:auto; aspect-ratio:16/9; object-fit:contain; transform:translateY(-50%); z-index:1; }
+    .hero { background:#FFFFFF; }
+    .hero-video { object-fit:contain; z-index:1; }
   }
 
   /* header (scroll state) */
@@ -142,8 +142,8 @@
     .navshop { display:none !important; }
     /* 모바일 1단 배치 시 데스크탑 지그재그(order)가 순서를 뒤섞음 → 전 섹션 사진 먼저로 통일 */
     .grid-2 .swap-wrap { order:-1 !important; }
-    /* Hero: 가로(4:3) 사진이 세로 화면에서 과도하게 줌인되지 않도록 높이 축소해 가로를 더 노출 */
-    #top { height:74svh !important; min-height:500px !important; }
+    /* Hero: 가로(16:9) 영상을 전부 노출하고 위아래 흰 여백은 각 100px 정도로 (헤더 88px 아래로 영상이 오도록 계산) */
+    #top { height:52svh !important; min-height:calc(56.25vw + 200px) !important; }
   }
 
   /* 좁은 화면(≤480px): 푸터 1단 — FOLLOW 아이콘이 화면 밖으로 잘리던 문제 */
